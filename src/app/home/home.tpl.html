@@ -1,0 +1,23 @@
+<div class="jumbotron">
+  <h1>Welcome to DnD Tables!</h1>
+
+  <p class="lead">
+    A simple DnD Tables Generation and Sharing App!
+  </p>
+
+</div>
+
+<div class="panel panel-default" id="sample-table"> 
+  <h2>Sample Table</h2>
+  <h3>{{sampleTable.name}}
+  <div style="display: table; width:70%">
+    <div style="display: table-cell" ng-repeat="column in sampleTable.columns">
+      <ul class="list-group">
+        <li class="list-group-item" ng-repeat="rowText in column.rowText">
+          {{rowText}}
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
