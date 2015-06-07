@@ -58,6 +58,24 @@ angular.module( 'ngBoilerplate.home', [
     });
     $scope.rollResult = rollResult;
   };
+
+  $scope.isEdit = false;
+  $scope.enableEdit = function() {
+    $scope.isEdit = true;
+  };
+
+  $scope.saveEdit = function() {
+    $scope.isEdit = false;
+    $http.put('http://localhost:8080/dndtables/table/1', $scope.sampleTable).
+    success(function(data, status, headers, config) {
+      alert('saved');
+    }).
+    error(function(data, status, headers, config) {
+      alert('save failed');
+      // called asynchronously if an error occurs
+      // or server returns response with an error status.
+    });
+  };
 })
 
 ;
