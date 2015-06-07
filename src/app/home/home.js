@@ -48,6 +48,16 @@ angular.module( 'ngBoilerplate.home', [
     // called asynchronously if an error occurs
     // or server returns response with an error status.
   });
+
+  $scope.rollTable = function() {
+    var tableData = $scope.sampleTable;
+    var rollResult = [];
+    tableData.columns.forEach(function(column) {
+      var selectedElement = Math.floor(Math.random()*column.rowText.length);
+      rollResult.push(column.rowText[selectedElement]);
+    });
+    $scope.rollResult = rollResult;
+  };
 })
 
 ;

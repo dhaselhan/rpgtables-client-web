@@ -7,17 +7,31 @@
 
 </div>
 
-<div class="panel panel-default" id="sample-table"> 
+<div id="sample-table"> 
   <h2>Sample Table</h2>
-  <h3>{{sampleTable.name}}
-  <div style="display: table; width:70%">
+  <h3>{{sampleTable.name}}</h3>
+  <div class="tables-main">
     <div style="display: table-cell" ng-repeat="column in sampleTable.columns">
       <ul class="list-group">
-        <li class="list-group-item" ng-repeat="rowText in column.rowText">
+        <li class="list-group-item tables-row tables-header">
+          {{column.header}}
+        </li>
+        <li class="list-group-item tables-row" ng-repeat="rowText in column.rowText">
           {{rowText}}
         </li>
       </ul>
     </div>
   </div>
+
+  <div class="tables-main">
+    <div style="display: table-cell" ng-repeat="entry in rollResult">
+      <ul class="list-group">
+        <li class="list-group-item tables-row">
+          {{entry}}
+        </li>
+      </ul>
+    </div>
+  </div>
+  <button type="button" class="btn btn-default" ng-click="rollTable()">Roll</button>
 </div>
 
