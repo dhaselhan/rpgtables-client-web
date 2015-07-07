@@ -44,9 +44,7 @@ angular.module( 'ngBoilerplate.home', [
     $scope.sampleTable = data;
   }).
   error(function(data, status, headers, config) {
-    alert('b');
-    // called asynchronously if an error occurs
-    // or server returns response with an error status.
+    alert('Server is Down :(');
   });
 
   $scope.rollTable = function() {
@@ -72,8 +70,6 @@ angular.module( 'ngBoilerplate.home', [
     }).
     error(function(data, status, headers, config) {
       alert('save failed');
-      // called asynchronously if an error occurs
-      // or server returns response with an error status.
     });
   };
 })
