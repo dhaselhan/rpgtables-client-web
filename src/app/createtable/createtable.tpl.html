@@ -1,0 +1,51 @@
+<div class="tables-wrapper"> 
+  <h2>Create Table</h2>
+  <div class="pull-left">
+  <h3 ng-if="!isEdit">{{newTable.name}}</h3>
+   <input ng-if="isEdit" type="text" min="1" ng-model="newTable.name">
+  </div>
+  <div class="pull-right">
+    <button ng-if="!isEdit" type="button" class="btn btn-default" ng-click="enableEdit()">Edit</button>
+    <button ng-if="isEdit" type="button" class="btn btn-default" ng-click="saveEdit()">Save</button>
+  </div>
+  <div class="tables-main">
+    <div style="display: table-cell" ng-repeat="column in newTable.columns track by $index">
+      <ul class="list-group">
+        <li ng-if="!isEdit" class="list-group-item tables-row tables-header">
+          {{column.header}}
+        </li>
+        <li ng-if="isEdit" class="list-group-item tables-row tables-header">
+          <input type="text" min="0" ng-model="column.header">
+        </li>
+        <li ng-if="!isEdit" class="list-group-item tables-row" ng-repeat="rowText in column.rowText">
+          {{rowText}}
+        </li>
+        <li ng-if="isEdit" class="list-group-item tables-row" ng-repeat="rowText in column.rowText track by $index">
+          <input type="text" min="0" ng-model="column.rowText[$index]">
+        </li>
+        <li ng-if="isEdit" class="list-group-item tables-row">
+          <button type="button" class="btn btn-default" ng-click="addRow($parent.$index)">+ Row</button>
+        </li>
+      </ul>
+    </div>
+    <div style="display: table-cell">
+      <ul class="list-group">
+        <li ng-if="isEdit" class="list-group-item tables-row tables-header">
+          <button ng-if="isEdit" type="button" class="btn btn-default" ng-click="addColumn()">+ Column</button>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="tables-main">
+    <div style="display: table-cell" ng-repeat="entry in rollResult">
+      <ul class="list-group">
+        <li class="list-group-item tables-row">
+          {{entry}}
+        </li>
+      </ul>
+    </div>
+  </div>
+  <button type="button" class="btn btn-default" ng-click="rollTable()">Roll</button>
+</div>
+

@@ -12,7 +12,7 @@
  * The dependencies block here is also where component dependencies should be
  * specified, as shown below.
  */
-angular.module( 'ngBoilerplate.home', [
+angular.module( 'ngBoilerplate.createtable', [
   'ui.router'
 ])
 
@@ -22,47 +22,55 @@ angular.module( 'ngBoilerplate.home', [
  * this way makes each module more "self-contained".
  */
 .config(function config( $stateProvider ) {
-  $stateProvider.state( 'home', {
-    url: '/home',
+  $stateProvider.state( 'createtable', {
+    url: '/create',
     views: {
       "main": {
-        controller: 'HomeCtrl',
-        templateUrl: 'home/home.tpl.html'
+        controller: 'CreateTable',
+        templateUrl: 'createtable/createtable.tpl.html'
       }
     },
-    data:{ pageTitle: 'Home' }
+    data:{ pageTitle: 'Create New Table' }
   });
 })
 
 /**
  * And of course we define a controller for our route.
  */
-.controller( 'HomeCtrl', function HomeController( $scope, $http, TableService ) {
-  TableService.getTable('sample',
+.controller( 'CreateTable', function CreateTableController( $scope, $http, TableService ) {
+  TableService.getTable('empty',
     function(data, status, headers, config) {
-      $scope.sampleTable = data;
+      $scope.newTable = data;
     },
     function(data, status, headers, config) {
       alert('Server is Down :(');
     }
   );
 
+  $scope.addColumn = function() {
+    $scope.newTable = TableService.addColumn($scope.newTable);
+  };
+
+  $scope.addRow = function(columnIndex) {
+    $scope.newTable = TableService.addRow(columnIndex, $scope.newTable);
+  };
+
   $scope.rollTable = function() {
-    var tableData = $scope.sampleTable;
+    var tableData = $scope.newTable;
     $scope.rollResult = TableService.rollTable(tableData);
   };
 
-  $scope.isEdit = false;
+  $scope.isEdit = true;
   $scope.enableEdit = function() {
     $scope.isEdit = true;
   };
 
   $scope.saveEdit = function() {
     $scope.isEdit = false;
-    
-    TableService.saveTable('sample', $scope.sampleTable,
+
+    TableService.saveTable($scope.newTable.id, $scope.newTable,
       function(data, status, headers, config) {
-        alert('saved');
+        $scope.newTable = data;
       },
       function(data, status, headers, config) {
         alert('save failed');
