@@ -7,6 +7,16 @@
 
 </div>
 
+<div>
+  <h2>Recent Tables</h2>
+  <div class="tables-main">
+    <div style="display: table-cell" ng-repeat="table in recentTables">
+      <h3><a ui-sref="edittable({ tableId : table.id })">{{ table.name }}</a></h3>
+    </div>
+  </div>
+</div>
+
+
 <div class="tables-wrapper"> 
   <h2>Sample Table</h2>
   <div class="pull-left">

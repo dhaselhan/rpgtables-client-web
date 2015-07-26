@@ -31,21 +31,43 @@ angular.module( 'ngBoilerplate.createtable', [
       }
     },
     data:{ pageTitle: 'Create New Table' }
+  }).state( 'edittable', {
+    url: '/table/:tableId',
+    views: {
+      "main": {
+        controller: 'CreateTable',
+        templateUrl: 'createtable/createtable.tpl.html'
+      }
+    },
+    data:{ pageTitle: 'Edit A Table' }
   });
 })
 
 /**
  * And of course we define a controller for our route.
  */
-.controller( 'CreateTable', function CreateTableController( $scope, $http, TableService ) {
-  TableService.getTable('empty',
-    function(data, status, headers, config) {
-      $scope.newTable = data;
-    },
-    function(data, status, headers, config) {
-      alert('Server is Down :(');
-    }
-  );
+.controller( 'CreateTable', function CreateTableController( $scope, $http, $stateParams, TableService ) {
+  if ($stateParams.tableId == null) {
+    TableService.getTable('empty',
+      function(data, status, headers, config) {
+        $scope.newTable = data;
+      },
+      function(data, status, headers, config) {
+        alert('Server is Down :(');
+      }
+    );
+  } else {
+    TableService.getTable($stateParams.tableId,
+      function(data, status, headers, config) {
+        $scope.newTable = data;
+      },
+      function(data, status, headers, config) {
+        alert('Server is Down :(');
+      }
+    );
+  }
+
+ 
 
   $scope.addColumn = function() {
     $scope.newTable = TableService.addColumn($scope.newTable);

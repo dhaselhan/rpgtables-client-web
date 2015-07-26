@@ -21,7 +21,6 @@ angular.module( 'ngBoilerplate', [
       http.get('http://localhost:8080/rpgtables/table/'+id).success(success).error(failure);
     },
     saveTable : function(id, tableData, success, failure) {
-      alert(id);
       if (id == null) {
         http.post('http://localhost:8080/rpgtables/table/createtable', tableData).success(success).error(failure);
       }
@@ -48,6 +47,11 @@ angular.module( 'ngBoilerplate', [
         rollResult.push(column.rowText[selectedElement]);
       });
       return rollResult;
+    },
+    getRecentTables : function(success) {
+      http.get('http://localhost:8080/rpgtables/table/recent').success(success).error(function () {
+        alert("Unable to contact server");
+      });
     }
   };
 }])

@@ -38,6 +38,12 @@ angular.module( 'ngBoilerplate.home', [
  * And of course we define a controller for our route.
  */
 .controller( 'HomeCtrl', function HomeController( $scope, $http, TableService ) {
+  $scope.recentTables = TableService.getRecentTables(
+    function(data, status, headers, config) {
+      $scope.recentTables = data;
+    }
+  );
+
   TableService.getTable('sample',
     function(data, status, headers, config) {
       $scope.sampleTable = data;
