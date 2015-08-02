@@ -15,6 +15,12 @@
     <!-- compiled JavaScript --><% scripts.forEach( function ( file ) { %>
     <script type="text/javascript" src="<%= file %>"></script><% }); %>
 
+    <script type="text/javascript">
+      function onSignIn(googleUser) {
+        angular.element(document).scope().onSignIn(googleUser);
+      }
+    </script>
+
     <meta name="google-signin-client_id" content="411637336320-sn1ru1021fg37ass1kuev363csejn3dk.apps.googleusercontent.com">
     <meta name="google-signin-cookie_policy" content="none">
 

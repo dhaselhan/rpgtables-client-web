@@ -4,6 +4,7 @@ angular.module( 'ngBoilerplate', [
   'ngBoilerplate.home',
   'ngBoilerplate.about',
   'ngBoilerplate.createtable',
+  'ngBoilerplate.mytables',
   'ui.router'
 ])
 
@@ -11,7 +12,17 @@ angular.module( 'ngBoilerplate', [
   $urlRouterProvider.otherwise( '/home' );
 })
 
-.run( function run () {
+.run( function run ($rootScope, $injector, AuthenticationService) {
+  $rootScope.onSignIn = AuthenticationService.onSignIn;
+  $injector.get("$http").defaults.transformRequest = function(data, headersGetter) {
+    //alert("Token " + access_token);
+    if ($rootScope.access_token) {
+      headersGetter()['Authorization'] = "Bearer "+$rootScope.access_token;
+    }
+    if (data) {
+      return angular.toJson(data); 
+    }
+  }; 
 })
 
 .factory('TableService', ['$http', function(http) {
@@ -19,6 +30,9 @@ angular.module( 'ngBoilerplate', [
   return {
     getTable : function(id, success, failure) {
       http.get('http://localhost:8080/rpgtables/table/'+id).success(success).error(failure);
+    },
+    getTablesByUser : function(userId, success, failure) {
+      http.get('http://localhost:8080/rpgtables/table/user/'+userId).success(success).error(failure);
     },
     saveTable : function(id, tableData, success, failure) {
       if (id == null) {
@@ -52,6 +66,26 @@ angular.module( 'ngBoilerplate', [
       http.get('http://localhost:8080/rpgtables/table/recent').success(success).error(function () {
         alert("Unable to contact server");
       });
+    }
+  };
+}])
+
+.factory('AuthenticationService', ['$http', '$rootScope', function(http, rootScope) {
+  return {
+    onSignIn : function(googleUser) {
+      var id_token = googleUser.getAuthResponse().id_token;
+      rootScope.user_email = googleUser.getBasicProfile().getEmail();
+      http.post('https://localhost:8443/rpgtables/users/login', id_token)
+        .success(function(data, status, headers, config) {
+          //We have our token!
+          rootScope.access_token = data;
+          //var headerToken = 'Basic ' + data;
+          //alert(headerToken);
+          //http.defaults.headers.common.Authorization = headerToken;
+        })
+        .error(function(data, status, headers, config) {
+          alert('Failed to recieve response from serverS');
+        });
     }
   };
 }])
