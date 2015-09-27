@@ -7,39 +7,33 @@ angular.module( 'ngBoilerplate', [
   'ngBoilerplate.mytables',
   'ui.router'
 ])
-
+.constant("CONFIG", {
+    "server_url": "https://localhost:8443"
+})
 .config( function myAppConfig ( $stateProvider, $urlRouterProvider ) {
   $urlRouterProvider.otherwise( '/home' );
 })
 
-.run( function run ($rootScope, $injector, AuthenticationService) {
+.run( function run ($rootScope, $http, AuthenticationService) {
   $rootScope.onSignIn = AuthenticationService.onSignIn;
-  $injector.get("$http").defaults.transformRequest = function(data, headersGetter) {
-    //alert("Token " + access_token);
-    if ($rootScope.access_token) {
-      headersGetter()['Authorization'] = "Bearer "+$rootScope.access_token;
-    }
-    if (data) {
-      return angular.toJson(data); 
-    }
-  }; 
+  $rootScope.isAuthenticated = false;
 })
 
-.factory('TableService', ['$http', function(http) {
+.factory('TableService', ['$http', 'CONFIG', function(http, CONFIG) {
 
   return {
     getTable : function(id, success, failure) {
-      http.get('http://localhost:8080/rpgtables/table/'+id).success(success).error(failure);
+      http.get(CONFIG.server_url + '/rpgtables/table/'+id).success(success).error(failure);
     },
     getTablesByUser : function(userId, success, failure) {
-      http.get('http://localhost:8080/rpgtables/table/user/'+userId).success(success).error(failure);
+      http.get(CONFIG.server_url + '/rpgtables/table/user/'+userId).success(success).error(failure);
     },
     saveTable : function(id, tableData, success, failure) {
       if (id == null) {
-        http.post('http://localhost:8080/rpgtables/table/createtable', tableData).success(success).error(failure);
+        http.post(CONFIG.server_url + '/rpgtables/table/createtable', tableData).success(success).error(failure);
       }
       else {
-        http.post('http://localhost:8080/rpgtables/table/'+id, tableData).success(success).error(failure);
+        http.post(CONFIG.server_url + '/rpgtables/table/'+id, tableData).success(success).error(failure);
       }
     },
     addColumn : function(table) {
@@ -63,25 +57,25 @@ angular.module( 'ngBoilerplate', [
       return rollResult;
     },
     getRecentTables : function(success) {
-      http.get('http://localhost:8080/rpgtables/table/recent').success(success).error(function () {
+      http.get(CONFIG.server_url +'/rpgtables/table/recent').success(success).error(function () {
         alert("Unable to contact server");
       });
     }
   };
 }])
 
-.factory('AuthenticationService', ['$http', '$rootScope', function(http, rootScope) {
+.factory('AuthenticationService', ['$http', '$rootScope', '$injector', 'CONFIG', function(http, rootScope, injector) {
   return {
     onSignIn : function(googleUser) {
       var id_token = googleUser.getAuthResponse().id_token;
       rootScope.user_email = googleUser.getBasicProfile().getEmail();
-      http.post('https://localhost:8443/rpgtables/users/login', id_token)
-        .success(function(data, status, headers, config) {
+      http.post(CONFIG.server_url + '/rpgtables/users/login', id_token)
+        .success(function(token, status, headers, config) {
           //We have our token!
-          rootScope.access_token = data;
-          //var headerToken = 'Basic ' + data;
-          //alert(headerToken);
-          //http.defaults.headers.common.Authorization = headerToken;
+          rootScope.access_token = token;
+          alert("Access Token Set");
+          rootScope.isAuthenticated = true;
+          //http.defaults.headers.commmon['authorization-token'] = token;
         })
         .error(function(data, status, headers, config) {
           alert('Failed to recieve response from serverS');
