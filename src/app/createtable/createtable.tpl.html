@@ -2,7 +2,7 @@
   <h2>Create Table</h2>
   <div class="pull-left">
   <h3 ng-if="!isEdit">{{newTable.name}}</h3>
-   <input ng-if="isEdit" type="text" min="1" ng-model="newTable.name">
+   <input ng-if="isEdit" type="text" min="1" placeholder="Table Name" ng-model="newTable.name">
   </div>
   <div class="pull-right">
     <button ng-if="!isEdit" type="button" class="btn btn-default" ng-click="enableEdit()">Edit</button>
@@ -15,13 +15,13 @@
           {{column.header}}
         </li>
         <li ng-if="isEdit" class="list-group-item tables-row tables-header">
-          <input type="text" min="0" ng-model="column.header">
+          <input type="text" min="0" placeholder="Column Name" ng-model="column.header">
         </li>
         <li ng-if="!isEdit" class="list-group-item tables-row" ng-repeat="rowText in column.rowText">
           {{rowText}}
         </li>
         <li ng-if="isEdit" class="list-group-item tables-row" ng-repeat="rowText in column.rowText track by $index">
-          <input type="text" min="0" ng-model="column.rowText[$index]">
+          <input type="text" min="0" ng-model="column.rowText[$index]" placeholder="Row Data">
         </li>
         <li ng-if="isEdit" class="list-group-item tables-row">
           <button type="button" class="btn btn-default" ng-click="addRow($parent.$index)">+ Row</button>

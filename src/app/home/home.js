@@ -65,15 +65,6 @@ angular.module( 'ngBoilerplate.home', [
 
   $scope.saveEdit = function() {
     $scope.isEdit = false;
-    
-    TableService.saveTable('sample', $scope.sampleTable,
-      function(data, status, headers, config) {
-        alert('saved');
-      },
-      function(data, status, headers, config) {
-        alert('save failed');
-      }
-    );
   };
 })
 

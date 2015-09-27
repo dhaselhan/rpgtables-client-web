@@ -39,15 +39,16 @@ angular.module( 'ngBoilerplate.mytables', [
  */
 .controller( 'MyTablesCtrl', function MyTablesController( $scope, TableService ) {
   var userId = $scope.user_email;
-  alert(userId);
-  TableService.getTablesByUser(userId,
-    function(data, status, headers, config) {
-      $scope.usersTables = data;
-    },
-    function(data, status, headers, config) {
-      alert('Server is Down :(');
-    }
-  );
+  if (userId) {
+    TableService.getTablesByUser(userId,
+      function(data, status, headers, config) {
+        $scope.usersTables = data;
+      },
+      function(data, status, headers, config) {
+        alert('Server is Down :(');
+      }
+    );
+  }
 })
 
 ;

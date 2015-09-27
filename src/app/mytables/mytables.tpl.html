@@ -5,7 +5,10 @@
       <h3><a ui-sref="edittable({ tableId : table.id })">{{ table.name }}</a></h3>
     </div>
   </div>
-  <div ng-hide="!!usersTables.length">
+  <div ng-if="!isAuthenticated">
+  	<h3>Please sign in above to access this section</h3>
+  </div>
+  <div ng-if="usersTables.length == 0 && isAuthenticated">
   	<h3>You have haven't made any tables yet! Click the button below to make one.</h3>
   </div>
 </div>

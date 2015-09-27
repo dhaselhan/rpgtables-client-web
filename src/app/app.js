@@ -38,14 +38,14 @@ angular.module( 'ngBoilerplate', [
     },
     addColumn : function(table) {
       var newColumn = {
-        header : "New Column",
-        rowText : ["New Row"]
+        header : "",
+        rowText : [""]
       };
       table.columns.push(newColumn);
       return table;
     },
     addRow : function(columnIndex, table) {
-      table.columns[columnIndex].rowText.push("New Row");
+      table.columns[columnIndex].rowText.push("");
       return table;
     },
     rollTable : function(tableData) {
