@@ -64,7 +64,7 @@ angular.module( 'ngBoilerplate', [
   };
 }])
 
-.factory('AuthenticationService', ['$http', '$rootScope', '$injector', 'CONFIG', function(http, rootScope, injector) {
+.factory('AuthenticationService', ['$http', 'CONFIG', '$rootScope', '$injector', function(http, CONFIG, rootScope, injector) {
   return {
     onSignIn : function(googleUser) {
       var id_token = googleUser.getAuthResponse().id_token;
@@ -73,9 +73,8 @@ angular.module( 'ngBoilerplate', [
         .success(function(token, status, headers, config) {
           //We have our token!
           rootScope.access_token = token;
-          alert("Access Token Set");
           rootScope.isAuthenticated = true;
-          //http.defaults.headers.commmon['authorization-token'] = token;
+          http.defaults.headers.common['Authorization'] = 'Bearer ' + token;
         })
         .error(function(data, status, headers, config) {
           alert('Failed to recieve response from serverS');
