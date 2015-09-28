@@ -30,7 +30,7 @@ angular.module( 'ngBoilerplate', [
     },
     saveTable : function(id, tableData, success, failure) {
       if (id == null) {
-        http.post(CONFIG.server_url + '/rpgtables/table/createtable', tableData).success(success).error(failure);
+        http.post(CONFIG.server_url + '/rpgtables/table/create', tableData).success(success).error(failure);
       }
       else {
         http.post(CONFIG.server_url + '/rpgtables/table/'+id, tableData).success(success).error(failure);
@@ -86,7 +86,7 @@ angular.module( 'ngBoilerplate', [
 .controller( 'AppCtrl', function AppCtrl ( $scope, $location ) {
   $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams){
     if ( angular.isDefined( toState.data.pageTitle ) ) {
-      $scope.pageTitle = toState.data.pageTitle + ' | DnD Tables' ;
+      $scope.pageTitle = toState.data.pageTitle + ' | RPG Tables' ;
     }
   });
 });

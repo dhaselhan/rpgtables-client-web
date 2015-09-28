@@ -39,7 +39,7 @@ angular.module( 'ngBoilerplate.createtable', [
         templateUrl: 'createtable/createtable.tpl.html'
       }
     },
-    data:{ pageTitle: 'Edit A Table' }
+    data:{ pageTitle: 'View A Table' }
   });
 })
 
@@ -48,6 +48,8 @@ angular.module( 'ngBoilerplate.createtable', [
  */
 .controller( 'CreateTable', function CreateTableController( $scope, $http, $stateParams, TableService ) {
   if ($stateParams.tableId == null) {
+    $scope.isEdit = true;
+    $scope.canEdit = true;
     TableService.getTable('empty',
       function(data, status, headers, config) {
         $scope.newTable = data;
@@ -57,9 +59,11 @@ angular.module( 'ngBoilerplate.createtable', [
       }
     );
   } else {
+    $scope.isEdit = false;
     TableService.getTable($stateParams.tableId,
       function(data, status, headers, config) {
         $scope.newTable = data;
+        $scope.canEdit = data.canEdit;
       },
       function(data, status, headers, config) {
         alert('Server is Down :(');
@@ -82,7 +86,6 @@ angular.module( 'ngBoilerplate.createtable', [
     $scope.rollResult = TableService.rollTable(tableData);
   };
 
-  $scope.isEdit = true;
   $scope.enableEdit = function() {
     $scope.isEdit = true;
   };

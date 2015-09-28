@@ -5,7 +5,7 @@
    <input ng-if="isEdit" type="text" min="1" placeholder="Table Name" ng-model="newTable.name">
   </div>
   <div class="pull-right">
-    <button ng-if="!isEdit" type="button" class="btn btn-default" ng-click="enableEdit()">Edit</button>
+    <button ng-if="!isEdit&&canEdit" type="button" class="btn btn-default" ng-click="enableEdit()">Edit</button>
     <button ng-if="isEdit" type="button" class="btn btn-default" ng-click="saveEdit()">Save</button>
   </div>
   <div class="tables-main">
